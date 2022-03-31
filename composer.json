@@ -1,7 +1,7 @@
 {
   "name": "pangolia/utils",
   "description": "Various utilities.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "homepage": "https://pangolia.com",
   "scripts": {
     "phpcs": "./vendor/bin/phpcs --standard=./phpcs.xml",

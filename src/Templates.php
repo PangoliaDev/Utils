@@ -23,7 +23,7 @@ class Templates {
 	 * @param array<string, string|string[]|array> $config
 	 * @return void
 	 */
-	public function __construct( array $config ) {
+	public static function config( array $config ) {
 		static::$template_path = $config['path'] ?? [];
 		static::$template_args = $config['args'] ?? [];
 	}

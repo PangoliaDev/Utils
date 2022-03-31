@@ -29,7 +29,7 @@ class Svg {
 	 * @param array<string, string|string[]|array> $config
 	 * @return void
 	 */
-	public function __construct( array $config ) {
+	public static function config( array $config ) {
 		static::$svg_inline = $config['inline'] ?? [];
 		static::$svg_sprites = $config['sprites'] ?? [];
 	}
