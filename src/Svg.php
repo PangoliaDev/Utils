@@ -60,6 +60,8 @@ class Svg {
 	}
 
 	/**
+	 * Render sprite SVG
+	 *
 	 * @param string                $sprite
 	 * @param string                $id
 	 * @param array<string, string> $attributes
@@ -68,9 +70,9 @@ class Svg {
 	 */
 	public static function render_sprite( string $sprite, string $id, array $attributes = [], bool $lazy = false ): string {
 		if ( $lazy === false || static::disable_lazy_conditions() ) {
-			$xlink_href = static::$svg_sprites[ $sprite ] . "#{$id}";
+			$xlink_href = static::get_sprite_url( $sprite, $id );
 		} else {
-			$attributes[ static::$lazy_attr ] = static::$svg_sprites[ $sprite ] . "#{$id}";
+			$attributes[ static::$lazy_attr ] = static::get_sprite_url( $sprite, $id );
 			$xlink_href = 'http://www.w3.org/1999/xlink';
 		}
 
@@ -81,6 +83,17 @@ class Svg {
 		$svg_string .= "</svg>";
 
 		return $svg_string;
+	}
+
+	/**
+	 * Get sprite URL with SVG ID
+	 *
+	 * @param string $sprite
+	 * @param string $id
+	 * @return string
+	 */
+	public static function get_sprite_url( string $sprite, string $id ): string {
+		return static::$svg_sprites[ $sprite ] . "#{$id}";
 	}
 
 	/**
