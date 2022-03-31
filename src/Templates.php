@@ -6,6 +6,29 @@ namespace Pangolia\Utils;
 class Templates {
 
 	/**
+	 * Path to templates
+	 *
+	 * @var string|array
+	 */
+	protected static $template_path;
+
+	/**
+	 * Template global arguments
+	 *
+	 * @var array
+	 */
+	protected static array $template_args;
+
+	/**
+	 * @param array<string, string|string[]|array> $config
+	 * @return void
+	 */
+	public function __construct( array $config ) {
+		static::$template_path = $config['path'] ?? [];
+		static::$template_args = $config['args'] ?? [];
+	}
+
+	/**
 	 * Wrapper for get template function
 	 *
 	 * @param string                   $path     Project source path.
@@ -13,12 +36,21 @@ class Templates {
 	 * @param array<int|string, mixed> $args     Optional. Additional arguments passed to the template.
 	 *                                           Default empty array.
 	 * @return void|false Void on success, false if the template does not exist.
+	 * @throws \Exception
 	 */
 	public static function get( string $path, string $template, array $args = [] ) {
+		if ( ! is_callable( static::$template_path ) ) {
+			throw new \Exception( 'Template path is not callable' );
+		}
+
 		$template = \get_template_part(
-			"src/{$path}/Static/templates/{$template}",
+			\call_user_func(
+				static::$template_path,
+				$path,
+				$template
+			),
 			null,
-			$args
+			\array_merge( $args, static::$template_args )
 		);
 
 		if ( $template === false ) {
@@ -34,6 +66,7 @@ class Templates {
 	 * @param array<int|string, mixed> $args     Optional. Additional arguments passed to the template.
 	 *                                           Default empty array.
 	 * @return void|false Void on success, false if the template does not exist.
+	 * @throws \Exception
 	 */
 	public static function get_component( string $path, string $template, array $args = [] ) {
 		$template = static::get( $path, "components/{$template}", $args );

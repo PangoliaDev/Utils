@@ -26,12 +26,12 @@ class Svg {
 	protected static array $svg_sprites;
 
 	/**
-	 * @param array<string, string|string[]|array> $svg_config
+	 * @param array<string, string|string[]|array> $config
 	 * @return void
 	 */
-	public static function config( array $svg_config ) {
-		static::$svg_inline = $svg_config['inline'] ?? [];
-		static::$svg_sprites = $svg_config['sprites'] ?? [];
+	public function __construct( array $config ) {
+		static::$svg_inline = $config['inline'] ?? [];
+		static::$svg_sprites = $config['sprites'] ?? [];
 	}
 
 	/**
@@ -42,7 +42,8 @@ class Svg {
 	 * @param array<string, string> $colors
 	 * @return string
 	 */
-	public static function inject_file( string $file_path, array $attributes = [], array $colors = [] ): string {
+	public
+	static function inject_file( string $file_path, array $attributes = [], array $colors = [] ): string {
 		return static::create_inline_svg( \file_get_contents( $file_path ), $attributes, $colors );
 	}
 
@@ -55,7 +56,8 @@ class Svg {
 	 * @param array<string, string> $colors
 	 * @return string
 	 */
-	public static function render_inline( string $svg, string $group = 'ui', array $attributes = [], array $colors = [] ): string {
+	public
+	static function render_inline( string $svg, string $group = 'ui', array $attributes = [], array $colors = [] ): string {
 		return static::create_inline_svg( static::$svg_inline[ $group ][ $svg ], $attributes, $colors );
 	}
 
@@ -66,7 +68,8 @@ class Svg {
 	 * @param bool                  $lazy
 	 * @return string
 	 */
-	public static function render_sprite( string $sprite, string $id, array $attributes, bool $lazy = false ): string {
+	public
+	static function render_sprite( string $sprite, string $id, array $attributes = [], bool $lazy = false ): string {
 		if ( $lazy === false || static::disable_lazy_conditions() ) {
 			$xlink_href = static::$svg_sprites[ $sprite ] . "#{$id}";
 		} else {
@@ -91,7 +94,8 @@ class Svg {
 	 * @param array<string, string> $colors
 	 * @return string
 	 */
-	protected static function create_inline_svg( string $svg_element, array $attributes = [], array $colors = [] ): string {
+	protected
+	static function create_inline_svg( string $svg_element, array $attributes = [], array $colors = [] ): string {
 		$search = [ '<svg ' ];
 		$replace = [ '<svg ' . static::create_attr( $attributes ) ];
 
@@ -112,7 +116,8 @@ class Svg {
 	 * @param string                $svg_attr
 	 * @return string
 	 */
-	protected static function create_attr( array $attributes, string $svg_attr = '' ): string {
+	protected
+	static function create_attr( array $attributes, string $svg_attr = '' ): string {
 		foreach ( $attributes as $attr => $spec ) {
 			$svg_attr .= "{$attr}='{$spec}' ";
 		}
@@ -124,7 +129,8 @@ class Svg {
 	 *
 	 * @return bool
 	 */
-	protected static function disable_lazy_conditions(): bool {
+	protected
+	static function disable_lazy_conditions(): bool {
 		return strpos( $_SERVER['REQUEST_URI'], 'action=elementor' ) !== false;
 	}
 }
