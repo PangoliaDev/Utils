@@ -3,11 +3,6 @@ declare( strict_types = 1 );
 
 namespace Pangolia\Utils;
 
-/**
- * Collection of debug helpers.
- *
- * @since 0.1.0
- */
 class Debug {
 
 	/**
