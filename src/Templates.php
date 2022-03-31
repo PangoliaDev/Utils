@@ -25,12 +25,12 @@ class Templates {
 	 * @throws \Exception
 	 */
 	public static function config( array $config ) {
+		static::$template_path = $config['path'] ?? [];
+		static::$template_args = $config['args'] ?? [];
+
 		if ( ! is_callable( static::$template_path ) ) {
 			throw new \Exception( 'Template path is not callable' );
 		}
-
-		static::$template_path = $config['path'] ?? [];
-		static::$template_args = $config['args'] ?? [];
 	}
 
 	/**
