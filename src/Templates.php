@@ -22,8 +22,13 @@ class Templates {
 	/**
 	 * @param array<string, string|string[]|array> $config
 	 * @return void
+	 * @throws \Exception
 	 */
 	public static function config( array $config ) {
+		if ( ! is_callable( static::$template_path ) ) {
+			throw new \Exception( 'Template path is not callable' );
+		}
+
 		static::$template_path = $config['path'] ?? [];
 		static::$template_args = $config['args'] ?? [];
 	}
@@ -36,13 +41,8 @@ class Templates {
 	 * @param array<int|string, mixed> $args     Optional. Additional arguments passed to the template.
 	 *                                           Default empty array.
 	 * @return void|false Void on success, false if the template does not exist.
-	 * @throws \Exception
 	 */
 	public static function get( string $path, string $template, array $args = [] ) {
-		if ( ! is_callable( static::$template_path ) ) {
-			throw new \Exception( 'Template path is not callable' );
-		}
-
 		$template = \get_template_part(
 			\call_user_func(
 				static::$template_path,
@@ -66,7 +66,6 @@ class Templates {
 	 * @param array<int|string, mixed> $args     Optional. Additional arguments passed to the template.
 	 *                                           Default empty array.
 	 * @return void|false Void on success, false if the template does not exist.
-	 * @throws \Exception
 	 */
 	public static function get_component( string $path, string $template, array $args = [] ) {
 		$template = static::get( $path, "components/{$template}", $args );
