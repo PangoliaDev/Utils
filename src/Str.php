@@ -155,6 +155,16 @@ class Str {
 	}
 
 	/**
+	 * @param string $needle
+	 * @return bool
+	 */
+	public static function request_url_contains( string $needle ): bool {
+		$current_url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+		return strpos( $current_url, $needle ) !== false;
+	}
+
+	/**
 	 * Checks if the string is a URL.
 	 *
 	 * @param string $string The string to validate.
@@ -179,38 +189,6 @@ class Str {
 		return $trim === true
 			? wp_trim_words( $string, $num_words, $more )
 			: $string;
-	}
-
-	/**
-	 * Render CSS rules
-	 *
-	 * @param array<string, mixed> $rules
-	 * @return string
-	 */
-	public static function render_css( array $rules ): string {
-		$css_string = '';
-		foreach ( $rules as $rule ) {
-			$css_string .= "{$rule['selector']} {";
-
-			foreach ( $rule['declarations'] as $property => $value ) {
-
-				if ( is_string( $value ) ) {
-					$css_string .= "{$property}: {$value};";
-
-				} elseif ( is_array( $value ) && $property === 'src' ) {
-					$count_sources = 0;
-					$css_string .= 'src: ';
-					foreach ( $value as $format => $url ) {
-						$count_sources++;
-						$css_string .= "url('{$url}') format('{$format}')";
-						$css_string .= count( $value ) === $count_sources ? ';' : ',';
-					}
-				}
-			}
-
-			$css_string .= '}';
-		}
-		return $css_string;
 	}
 }
 
