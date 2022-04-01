@@ -14,10 +14,13 @@ class Templates {
 
 	/**
 	 * Template global arguments
-	 *
-	 * @var array
 	 */
 	protected static array $template_args;
+
+	/**
+	 * Custom templates
+	 */
+	protected static array $custom_templates;
 
 	/**
 	 * @param array<string, string|string[]|array> $config
@@ -27,6 +30,7 @@ class Templates {
 	public static function config( array $config ) {
 		static::$template_path = $config['path'] ?? [];
 		static::$template_args = $config['args'] ?? [];
+		static::$custom_templates = $config['custom'] ?? [];
 
 		if ( ! is_callable( static::$template_path ) ) {
 			throw new \Exception( 'Template path is not callable' );
@@ -67,11 +71,39 @@ class Templates {
 	 *                                           Default empty array.
 	 * @return void|false Void on success, false if the template does not exist.
 	 */
-	public static function get_component( string $path, string $template, array $args = [] ) {
-		$template = static::get( $path, "components/{$template}", $args );
+	public static function get_version( string $path, string $template, string $version, array $args = [] ) {
+		$template = static::get( $path, "{$template}-{$version}", $args );
 
 		if ( $template === false ) {
 			return false;
+		}
+	}
+
+	/**
+	 * Determines whether currently in this template.
+	 *
+	 * @param string|array $template The specific template filename or array of templates to match.
+	 * @return bool True on success, false on failure.
+	 */
+	public static function is_template( $template ): bool {
+		if ( isset( static::$custom_templates[ $template ] ) ) {
+			return \is_page_template( static::$custom_templates[ $template ]['file'] );
+		} else {
+			return \is_page_template( $template );
+		}
+	}
+
+	/**
+	 * Check if the specific template filename for a given post matches our template
+	 *
+	 * @param string|array $template The specific template filename or array of templates to match.
+	 * @return bool True on success, false on failure.
+	 */
+	public static function is_template_slug( $template, $post = null ): bool {
+		if ( isset( static::$custom_templates[ $template ] ) ) {
+			return get_page_template_slug( $post ) === static::$custom_templates[ $template ]['file'];
+		} else {
+			return get_page_template_slug( $post ) === $template;
 		}
 	}
 }
