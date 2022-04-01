@@ -7,11 +7,6 @@ class Debug {
 
 	/**
 	 * Dump and die.
-	 *
-	 * @param mixed $value The variable you want to export.
-	 * @return void
-	 *
-	 * @since 0.1.0
 	 */
 	public static function dd( $value ) {
 		\ob_end_clean();
@@ -30,10 +25,6 @@ class Debug {
 
 	/**
 	 * Print and die.
-	 *
-	 * @param mixed $value The expression to be printed.
-	 * @return void
-	 * @since 0.1.0
 	 */
 	public static function pd( $value ) {
 		$html = "\n<pre>\n";
@@ -41,5 +32,16 @@ class Debug {
 		$html .= "</pre>\n";
 		echo $html;
 		die;
+	}
+
+	/**
+	 * Ray debugging
+	 */
+	public static function ray() {
+		if ( class_exists('Spatie\WordPressRay\ray') ) {
+			return \Spatie\WordPressRay\ray(...func_get_args());
+		} else {
+			return false;
+		}
 	}
 }

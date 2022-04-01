@@ -36,4 +36,34 @@ class Css {
 		}
 		return $css_string;
 	}
+
+	/**
+	 * Inject CSS from a file
+	 *
+	 * @param string $file
+	 * @param array  $attr
+	 * @return void
+	 */
+	public static function inject_file_css( string $file, array $attr = [] ) {
+		ob_start();
+		include $file;
+		$inline_css = ob_get_clean();
+		static::inject_inline_css( $inline_css, $attr );
+	}
+
+	/**
+	 * Inject CSS with a style tag
+	 *
+	 * @param string $inline_css
+	 * @param array  $attr
+	 * @return void
+	 */
+	public static function inject_inline_css( string $inline_css, array $attr = [] ) {
+		if ( $inline_css != "" ) {
+			$attr = Str::create_attr( $attr );
+			echo "
+<style {$attr}>{$inline_css}</style>
+";
+		}
+	}
 }

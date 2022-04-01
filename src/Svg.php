@@ -76,7 +76,7 @@ class Svg {
 			$xlink_href = 'http://www.w3.org/1999/xlink';
 		}
 
-		$svg_attr = static::create_attr( $attributes );
+		$svg_attr = Str::create_attr( $attributes );
 
 		$svg_string = "<svg {$svg_attr}>";
 		$svg_string .= "<use xlink:href='{$xlink_href}'/>";
@@ -106,7 +106,7 @@ class Svg {
 	 */
 	protected static function create_inline_svg( string $svg_element, array $attributes = [], array $colors = [] ): string {
 		$search = [ '<svg ' ];
-		$replace = [ '<svg ' . static::create_attr( $attributes ) ];
+		$replace = [ '<svg ' . Str::create_attr( $attributes ) ];
 
 		if ( ! empty( $colors ) ) {
 			foreach ( $colors as $search_color => $replace_color ) {
@@ -116,20 +116,6 @@ class Svg {
 		}
 
 		return \str_replace( $search, $replace, $svg_element );
-	}
-
-	/**
-	 * Create html attributes
-	 *
-	 * @param array<string, string> $attributes
-	 * @param string                $svg_attr
-	 * @return string
-	 */
-	protected static function create_attr( array $attributes, string $svg_attr = '' ): string {
-		foreach ( $attributes as $attr => $spec ) {
-			$svg_attr .= "{$attr}='{$spec}' ";
-		}
-		return $svg_attr;
 	}
 
 	/**

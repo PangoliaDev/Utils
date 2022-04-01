@@ -6,101 +6,6 @@ namespace Pangolia\Utils;
 class Str {
 
 	/**
-	 * Scan and extract all images from a given string.
-	 *
-	 * @param string $string
-	 * @return mixed
-	 */
-	public static function extract_images( string $string ) {
-		preg_match_all( '/<img[\s\r\n]+.*?>/is', $string, $matches );
-		return $matches[0];
-	}
-
-	/**
-	 * Scan and extract the first image from a given string.
-	 *
-	 * @param string $string
-	 * @return mixed
-	 */
-	public static function extract_image( string $string ) {
-		preg_match( '/<img[\s\r\n]+.*?>/is', $string, $match );
-		return array_pop( $match );
-	}
-
-	/**
-	 * Scan and extract the "src=" value from an image html string.
-	 *
-	 * @param string $string
-	 * @return mixed|null
-	 */
-	public static function extract_image_src( string $string ) {
-		preg_match( '@src="([^"]+)"@', $string, $match );
-		return array_pop( $match );
-	}
-
-	/**
-	 * Scan and extract the "width=" value from an html string.
-	 *
-	 * @param string $string
-	 * @return mixed|null
-	 */
-	public static function extract_width( string $string ) {
-		preg_match( '@width="([^"]+)"@', $string, $match );
-		return array_pop( $match );
-	}
-
-	/**
-	 * Scan and extract the "width=" value from an html string.
-	 *
-	 * @param string $string
-	 * @return mixed|null
-	 */
-	public static function extract_height( string $string ) {
-		preg_match( '@height="([^"]+)"@', $string, $match );
-		return array_pop( $match );
-	}
-
-	/**
-	 * Adds a class to a html tag.
-	 *
-	 * @param string $html  The HTML "tag" code we want to modify
-	 * @param string $tag   The "tag" the $html code string uses, so we can target it
-	 *                      in our replacement. For example 'img'.
-	 * @param string $class The HTML class we want to add
-	 * @return array|string|string[]|null
-	 */
-	public static function add_html_class( string $html, string $tag, string $class ) {
-		return preg_match( '/class=["\']/i', $html )
-
-			// The HTML code already has a "class=" parameter, so let's just add our class into that.
-			? preg_replace( '/class=(["\'])(.*?)["\']/is', 'class=$1' . $class . ' $2$1', $html )
-
-			// The HTML code doesn't have a "class=" parameter, so let's target the "tag" and add
-			// this parameter including our class.
-			: preg_replace( '/<' . $tag . '/is', '<' . $tag . ' class="' . $class . '"', $html );
-	}
-
-	/**
-	 * Adds a css to a html tag.
-	 *
-	 * @param string $html  The HTML "tag" code we want to modify
-	 * @param string $tag   The "tag" the $html code string uses, so we can target it
-	 *                      in our replacement. For example 'img'.
-	 * @param string $css   The HTML css we want to add
-	 * @return array|string|string[]|null
-	 */
-	public static function add_css( string $html, string $tag, string $css ) {
-		return preg_match( '/style=["\']/i', $html )
-
-			// The HTML code already has a "class=" parameter, so let's just add our class into that.
-			? preg_replace( '/style=(["\'])(.*?)["\']/is', 'style=$1' . $css . ' $2$1', $html )
-
-			// The HTML code doesn't have a "class=" parameter, so let's target the "tag" and add
-			// this parameter including our class.
-			: preg_replace( '/<' . $tag . '/is', '<' . $tag . ' style="' . $css . '"', $html );
-	}
-
-	/**
 	 * Determine if a given string starts with a given substring.
 	 *
 	 * @param string          $haystack
@@ -190,5 +95,113 @@ class Str {
 			? wp_trim_words( $string, $num_words, $more )
 			: $string;
 	}
-}
 
+	/**
+	 * Scan and extract all images from a given string.
+	 *
+	 * @param string $string
+	 * @return mixed
+	 */
+	public static function extract_images( string $string ) {
+		preg_match_all( '/<img[\s\r\n]+.*?>/is', $string, $matches );
+		return $matches[0];
+	}
+
+	/**
+	 * Scan and extract the first image from a given string.
+	 *
+	 * @param string $string
+	 * @return mixed
+	 */
+	public static function extract_image( string $string ) {
+		preg_match( '/<img[\s\r\n]+.*?>/is', $string, $match );
+		return array_pop( $match );
+	}
+
+	/**
+	 * Scan and extract the "src=" value from an image html string.
+	 *
+	 * @param string $string
+	 * @return mixed|null
+	 */
+	public static function extract_image_src( string $string ) {
+		preg_match( '@src="([^"]+)"@', $string, $match );
+		return array_pop( $match );
+	}
+
+	/**
+	 * Scan and extract the "width=" value from an html string.
+	 *
+	 * @param string $string
+	 * @return mixed|null
+	 */
+	public static function extract_width( string $string ) {
+		preg_match( '@width="([^"]+)"@', $string, $match );
+		return array_pop( $match );
+	}
+
+	/**
+	 * Scan and extract the "width=" value from an html string.
+	 *
+	 * @param string $string
+	 * @return mixed|null
+	 */
+	public static function extract_height( string $string ) {
+		preg_match( '@height="([^"]+)"@', $string, $match );
+		return array_pop( $match );
+	}
+
+	/**
+	 * Adds a class to a html tag.
+	 *
+	 * @param string $html  The HTML "tag" code we want to modify
+	 * @param string $tag   The "tag" the $html code string uses, so we can target it
+	 *                      in our replacement. For example 'img'.
+	 * @param string $class The HTML class we want to add
+	 * @return array|string|string[]|null
+	 */
+	public static function add_class_attr( string $html, string $tag, string $class ) {
+		return preg_match( '/class=["\']/i', $html )
+
+			// The HTML code already has a "class=" parameter, so let's just add our class into that.
+			? preg_replace( '/class=(["\'])(.*?)["\']/is', 'class=$1' . $class . ' $2$1', $html )
+
+			// The HTML code doesn't have a "class=" parameter, so let's target the "tag" and add
+			// this parameter including our class.
+			: preg_replace( '/<' . $tag . '/is', '<' . $tag . ' class="' . $class . '"', $html );
+	}
+
+	/**
+	 * Adds a css to a html tag.
+	 *
+	 * @param string $html  The HTML "tag" code we want to modify
+	 * @param string $tag   The "tag" the $html code string uses, so we can target it
+	 *                      in our replacement. For example 'img'.
+	 * @param string $css   The HTML css we want to add
+	 * @return array|string|string[]|null
+	 */
+	public static function add_style_attr( string $html, string $tag, string $css ) {
+		return preg_match( '/style=["\']/i', $html )
+
+			// The HTML code already has a "class=" parameter, so let's just add our class into that.
+			? preg_replace( '/style=(["\'])(.*?)["\']/is', 'style=$1' . $css . ' $2$1', $html )
+
+			// The HTML code doesn't have a "class=" parameter, so let's target the "tag" and add
+			// this parameter including our class.
+			: preg_replace( '/<' . $tag . '/is', '<' . $tag . ' style="' . $css . '"', $html );
+	}
+
+	/**
+	 * Create html attributes
+	 *
+	 * @param array<string, string> $attributes
+	 * @param string                $svg_attr
+	 * @return string
+	 */
+	public static function create_attr( array $attributes, string $svg_attr = '' ): string {
+		foreach ( $attributes as $attr => $spec ) {
+			$svg_attr .= "{$attr}='{$spec}' ";
+		}
+		return $svg_attr;
+	}
+}
