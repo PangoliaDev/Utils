@@ -200,7 +200,7 @@ class Str {
 	 */
 	public static function create_attr( array $attributes, string $svg_attr = '' ): string {
 		foreach ( $attributes as $attr => $spec ) {
-			$svg_attr .= "{$attr}='{$spec}' ";
+			$svg_attr .= "{$attr}=\"{$spec}\" ";
 		}
 		return $svg_attr;
 	}
