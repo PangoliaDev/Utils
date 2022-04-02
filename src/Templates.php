@@ -85,7 +85,7 @@ class Templates {
 	 * @param string|array $template The specific template filename or array of templates to match.
 	 * @return bool True on success, false on failure.
 	 */
-	public static function is_template( $template ): bool {
+	public static function is( $template ): bool {
 		if ( isset( static::$custom_templates[ $template ] ) ) {
 			return \is_page_template( static::$custom_templates[ $template ]['file'] );
 		} else {
@@ -99,7 +99,7 @@ class Templates {
 	 * @param string|array $template The specific template filename or array of templates to match.
 	 * @return bool True on success, false on failure.
 	 */
-	public static function is_template_slug( $template, $post = null ): bool {
+	public static function is_slug( $template, $post = null ): bool {
 		if ( isset( static::$custom_templates[ $template ] ) ) {
 			return get_page_template_slug( $post ) === static::$custom_templates[ $template ]['file'];
 		} else {
