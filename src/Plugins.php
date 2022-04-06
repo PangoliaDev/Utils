@@ -4,7 +4,6 @@ declare( strict_types = 1 );
 namespace Pangolia\Utils;
 
 class Plugins {
-
 	/**
 	 * Determines if the plugin is active
 	 *
