@@ -57,6 +57,23 @@ class Media {
 	}
 
 	/**
+	 * Tries to convert an attachment URL into a post ID and then returns the image src.
+	 *
+	 * @param string $url
+	 * @param string $size
+	 * @return false|string;
+	 */
+	public static function get_image_src_by_url( string $url, string $size ) {
+		$attachment_id = static::get_image_id_by_url( $url );
+
+		if ( $attachment_id === 0 ) {
+			return false;
+		}
+
+		return \wp_get_attachment_image_src( $attachment_id, $size );
+	}
+
+	/**
 	 * Get the attributes for srcset and sizes as a string
 	 *
 	 * @param int|string $attachment_id
@@ -114,16 +131,16 @@ class Media {
 	/**
 	 * A helper function to calculate the image sources to include in a 'srcset' & 'sizes' attribute.
 	 *
-	 * @param int[]  $size_array    {
+	 * @param int[]                    $size_array    {
 	 *
 	 * An array of width and height values.
 	 *
 	 * @type int $0 The width in pixels.
 	 * @type int $1 The height in pixels.
 	 * }
-	 * @param string $image_src     The 'src' of the image.
-	 * @param array<int|string, mixed>  $image_meta    The image meta data as returned by 'wp_get_attachment_metadata()'.
-	 * @param int    $attachment_id Optional. The image attachment ID. Default 0.
+	 * @param string                   $image_src     The 'src' of the image.
+	 * @param array<int|string, mixed> $image_meta    The image meta data as returned by 'wp_get_attachment_metadata()'.
+	 * @param int                      $attachment_id Optional. The image attachment ID. Default 0.
 	 * @return array<int|string, mixed>
 	 */
 	public static function get_image_calculations( array $size_array, string $image_src, array $image_meta, int $attachment_id ): array {
