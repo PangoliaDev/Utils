@@ -60,6 +60,19 @@ class Str {
 	}
 
 	/**
+	 * Removes parts of the string, trims the value and explodes the string into array and returns one of the values by key
+	 *
+	 * @param string          $string     String to explode do this on
+	 * @param string|string[] $haystack   Array of strings to remove
+	 * @param int             $key Array value to return from explode()
+	 * @param string          $separator  Explode separator
+	 * @return mixed|string
+	 */
+	public static function explode_and_remove( string $string, $haystack = '', int $key = 0, string $separator = ' ' ): string {
+		return explode( $separator, trim( str_replace( $haystack, '', $string ) ) )[ $key ];
+	}
+
+	/**
 	 * @param string $needle
 	 * @return bool
 	 */
@@ -94,6 +107,16 @@ class Str {
 		return $trim === true
 			? wp_trim_words( $string, $num_words, $more )
 			: $string;
+	}
+
+	/**
+	 * Counts words in a string.
+	 *
+	 * @param string $string the text to calculate
+	 * @return int
+	 */
+	public static function count_words( $string ): int {
+		return count( preg_split( '/\s+/u', $string, 0, PREG_SPLIT_NO_EMPTY ) );
 	}
 
 	/**
