@@ -6,6 +6,41 @@ namespace Pangolia\Utils;
 class Env {
 
 	/**
+	 * What env is this?
+	 *
+	 * @param string $env
+	 * @return bool
+	 */
+	public static function is( string $env ): bool {
+		switch ( $env ) :
+			case 'frontend' :
+				return static::is_frontend();
+			case 'backend' :
+				return static::is_backend();
+			case 'cli' :
+				return static::is_cli();
+			case 'cron' :
+				return static::is_cron();
+			case 'rest' :
+				return static::is_rest();
+			case 'ajax' :
+				return static::is_ajax();
+			case 'single' :
+				return \is_single();
+			case 'post' :
+				return \is_singular( 'post' );
+			case 'product' :
+				return \is_singular( 'product' );
+			case 'archive' :
+				return \is_archive();
+			case 'home' :
+				return \is_front_page();
+			default :
+				return false;
+		endswitch;
+	}
+
+	/**
 	 * We're on the front-end of the site
 	 *
 	 * @return bool
