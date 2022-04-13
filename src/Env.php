@@ -26,15 +26,23 @@ class Env {
 			case 'ajax' :
 				return static::is_ajax();
 			case 'single' :
-				return \is_single();
+				return static::is_single();
 			case 'post' :
-				return \is_singular( 'post' );
+				return static::is_post();
 			case 'product' :
-				return \is_singular( 'product' );
+				return static::is_product();
 			case 'archive' :
-				return \is_archive();
+				return static::is_archive();
 			case 'home' :
-				return \is_front_page();
+				return static::is_home();
+			case 'page' :
+				return static::is_page();
+			case 'search' :
+				return static::is_search();
+			case '404' :
+				return static::is_404();
+			case 'logged_in' :
+				return static::is_logged_in();
 			default :
 				return false;
 		endswitch;
@@ -96,5 +104,88 @@ class Env {
 	 */
 	public static function is_ajax(): bool {
 		return defined( 'DOING_AJAX' ) && DOING_AJAX;
+	}
+
+	/**
+	 * We're doing a single page request
+	 *
+	 * @return bool
+	 */
+	public static function is_single(): bool {
+		return \is_single();
+	}
+
+	/**
+	 * We're doing a single post request
+	 *
+	 * @return bool
+	 */
+	public static function is_post(): bool {
+		return \is_singular( 'post' );
+	}
+
+	/**
+	 * We're doing a single product request
+	 *
+	 * @return bool
+	 */
+	public static function is_product(): bool {
+		return \is_singular( 'product' );
+	}
+
+	/**
+	 * We're doing an archive request
+	 *
+	 * @return bool
+	 */
+	public static function is_archive(): bool {
+		return \is_archive();
+	}
+
+	/**
+	 * We're doing a home page request
+	 *
+	 * @return bool
+	 */
+	public static function is_home(): bool {
+		return \is_front_page();
+	}
+
+	/**
+	 * We're doing a search page request
+	 *
+	 * @return bool
+	 */
+	public static function is_search(): bool {
+		return \is_search();
+	}
+
+	/**
+	 * We're doing a 404 page request
+	 *
+	 * @return bool
+	 */
+	public static function is_404(): bool {
+		return \is_404();
+	}
+
+	/**
+	 * We're doing a user logged in request
+	 *
+	 * @return bool
+	 */
+	public static function is_logged_in(): bool {
+		return \is_user_logged_in();
+	}
+
+	/**
+	 * We're doing a page request
+	 *
+	 * @param int|string|int[]|string[] $page Optional. Page ID, title, slug, or array of such
+	 *                                        to check against. Default empty.
+	 * @return bool
+	 */
+	public static function is_page( $page = '' ): bool {
+		return \is_page( $page );
 	}
 }
