@@ -54,25 +54,12 @@ class Templates {
 				$template
 			),
 			null,
-			\array_merge( $args, static::$template_args )
+			\apply_filters( 'filter_template_args',
+				\array_merge( $args, static::$template_args ),
+				$path,
+				$template
+			)
 		);
-
-		if ( $template === false ) {
-			return false;
-		}
-	}
-
-	/**
-	 * Get template from the components folder
-	 *
-	 * @param string                   $path     Project source path.
-	 * @param string                   $template The slug name for the generic template.
-	 * @param array<int|string, mixed> $args     Optional. Additional arguments passed to the template.
-	 *                                           Default empty array.
-	 * @return void|false Void on success, false if the template does not exist.
-	 */
-	public static function get_version( string $path, string $template, string $version, array $args = [] ) {
-		$template = static::get( $path, "{$template}-{$version}", $args );
 
 		if ( $template === false ) {
 			return false;
@@ -101,10 +88,9 @@ class Templates {
 	 */
 	public static function is_slug( $template, $post = null ): bool {
 		if ( isset( static::$custom_templates[ $template ] ) ) {
-			return get_page_template_slug( $post ) === static::$custom_templates[ $template ]['file'];
+			return \get_page_template_slug( $post ) === static::$custom_templates[ $template ]['file'];
 		} else {
-			return get_page_template_slug( $post ) === $template;
+			return \get_page_template_slug( $post ) === $template;
 		}
 	}
 }
-
