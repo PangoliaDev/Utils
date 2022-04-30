@@ -67,6 +67,16 @@ class Templates {
 	}
 
 	/**
+	 * @param string                   $path     Component source path.
+	 * @param array<int|string, mixed> $args     Optional. Additional arguments passed to the template.
+	 *                                           Default empty array.
+	 * @return false|void
+	 */
+	public static function get_component( string $path, array $args = [] ) {
+		return static::get( "Components/{$path}", \sanitize_title($path), $args );
+	}
+
+	/**
 	 * Determines whether currently in this template.
 	 *
 	 * @param string|array $template The specific template filename or array of templates to match.
