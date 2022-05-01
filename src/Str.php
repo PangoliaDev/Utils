@@ -15,7 +15,7 @@ class Str {
 	 */
 	public static function starts_with( string $haystack, $needles ): bool {
 		foreach ( (array) $needles as $needle ) {
-			if ( (string) $needle !== '' && strncmp( $haystack, $needle, strlen( $needle ) ) === 0 ) {
+			if ( (string) $needle !== '' && \strncmp( $haystack, $needle, \strlen( $needle ) ) === 0 ) {
 				return true;
 			}
 		}
@@ -33,7 +33,7 @@ class Str {
 	 */
 	public static function ends_with( string $haystack, $needles ): bool {
 		foreach ( (array) $needles as $needle ) {
-			if ( $needle !== '' && substr( $haystack, -strlen( $needle ) ) === (string) $needle ) {
+			if ( $needle !== '' && \substr( $haystack, -strlen( $needle ) ) === (string) $needle ) {
 				return true;
 			}
 		}
@@ -51,7 +51,7 @@ class Str {
 	 */
 	public static function contains( string $haystack, $needles ): bool {
 		foreach ( (array) $needles as $needle ) {
-			if ( $needle !== '' && strpos( $haystack, $needle ) !== false ) {
+			if ( $needle !== '' && \strpos( $haystack, $needle ) !== false ) {
 				return true;
 			}
 		}
@@ -62,14 +62,14 @@ class Str {
 	/**
 	 * Removes parts of the string, trims the value and explodes the string into array and returns one of the values by key
 	 *
-	 * @param string          $string     String to explode do this on
-	 * @param string|string[] $haystack   Array of strings to remove
-	 * @param int             $key Array value to return from explode()
-	 * @param string          $separator  Explode separator
+	 * @param string          $string    String to explode do this on
+	 * @param string|string[] $haystack  Array of strings to remove
+	 * @param int             $key       Array value to return from explode()
+	 * @param string          $separator Explode separator
 	 * @return mixed|string
 	 */
 	public static function explode_and_remove( string $string, $haystack = '', int $key = 0, string $separator = ' ' ): string {
-		return explode( $separator, trim( str_replace( $haystack, '', $string ) ) )[ $key ];
+		return \explode( $separator, \trim( \str_replace( $haystack, '', $string ) ) )[ $key ];
 	}
 
 	/**
@@ -79,7 +79,7 @@ class Str {
 	public static function request_url_contains( string $needle ): bool {
 		$current_url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
-		return strpos( $current_url, $needle ) !== false;
+		return \strpos( $current_url, $needle ) !== false;
 	}
 
 	/**
@@ -103,9 +103,9 @@ class Str {
 	 * @return string
 	 */
 	public static function clean( string $string, bool $trim = false, int $num_words = 55, string $more = '...' ): string {
-		$string = wp_strip_all_tags( strip_shortcodes( $string ) );
+		$string = \wp_strip_all_tags( \strip_shortcodes( $string ) );
 		return $trim === true
-			? wp_trim_words( $string, $num_words, $more )
+			? \wp_trim_words( $string, $num_words, $more )
 			: $string;
 	}
 
@@ -116,7 +116,7 @@ class Str {
 	 * @return int
 	 */
 	public static function count_words( $string ): int {
-		return count( preg_split( '/\s+/u', $string, 0, PREG_SPLIT_NO_EMPTY ) );
+		return \count( \preg_split( '/\s+/u', $string, 0, PREG_SPLIT_NO_EMPTY ) );
 	}
 
 	/**
@@ -126,7 +126,7 @@ class Str {
 	 * @return mixed
 	 */
 	public static function extract_images( string $string ) {
-		preg_match_all( '/<img[\s\r\n]+.*?>/is', $string, $matches );
+		\preg_match_all( '/<img[\s\r\n]+.*?>/is', $string, $matches );
 		return $matches[0];
 	}
 
@@ -137,8 +137,8 @@ class Str {
 	 * @return mixed
 	 */
 	public static function extract_image( string $string ) {
-		preg_match( '/<img[\s\r\n]+.*?>/is', $string, $match );
-		return array_pop( $match );
+		\preg_match( '/<img[\s\r\n]+.*?>/is', $string, $match );
+		return \array_pop( $match );
 	}
 
 	/**
@@ -148,8 +148,8 @@ class Str {
 	 * @return mixed|null
 	 */
 	public static function extract_image_src( string $string ) {
-		preg_match( '@src="([^"]+)"@', $string, $match );
-		return array_pop( $match );
+		\preg_match( '@src="([^"]+)"@', $string, $match );
+		return \array_pop( $match );
 	}
 
 	/**
@@ -159,8 +159,8 @@ class Str {
 	 * @return mixed|null
 	 */
 	public static function extract_width( string $string ) {
-		preg_match( '@width="([^"]+)"@', $string, $match );
-		return array_pop( $match );
+		\preg_match( '@width="([^"]+)"@', $string, $match );
+		return \array_pop( $match );
 	}
 
 	/**
@@ -170,8 +170,8 @@ class Str {
 	 * @return mixed|null
 	 */
 	public static function extract_height( string $string ) {
-		preg_match( '@height="([^"]+)"@', $string, $match );
-		return array_pop( $match );
+		\preg_match( '@height="([^"]+)"@', $string, $match );
+		return \array_pop( $match );
 	}
 
 	/**
@@ -184,14 +184,14 @@ class Str {
 	 * @return array|string|string[]|null
 	 */
 	public static function add_class_attr( string $html, string $tag, string $class ) {
-		return preg_match( '/class=["\']/i', $html )
+		return \preg_match( '/class=["\']/i', $html )
 
 			// The HTML code already has a "class=" parameter, so let's just add our class into that.
-			? preg_replace( '/class=(["\'])(.*?)["\']/is', 'class=$1' . $class . ' $2$1', $html )
+			? \preg_replace( '/class=(["\'])(.*?)["\']/is', 'class=$1' . $class . ' $2$1', $html )
 
 			// The HTML code doesn't have a "class=" parameter, so let's target the "tag" and add
 			// this parameter including our class.
-			: preg_replace( '/<' . $tag . '/is', '<' . $tag . ' class="' . $class . '"', $html );
+			: \preg_replace( '/<' . $tag . '/is', '<' . $tag . ' class="' . $class . '"', $html );
 	}
 
 	/**
@@ -204,27 +204,27 @@ class Str {
 	 * @return array|string|string[]|null
 	 */
 	public static function add_style_attr( string $html, string $tag, string $css ) {
-		return preg_match( '/style=["\']/i', $html )
+		return \preg_match( '/style=["\']/i', $html )
 
 			// The HTML code already has a "class=" parameter, so let's just add our class into that.
-			? preg_replace( '/style=(["\'])(.*?)["\']/is', 'style=$1' . $css . ' $2$1', $html )
+			? \preg_replace( '/style=(["\'])(.*?)["\']/is', 'style=$1' . $css . ' $2$1', $html )
 
 			// The HTML code doesn't have a "class=" parameter, so let's target the "tag" and add
 			// this parameter including our class.
-			: preg_replace( '/<' . $tag . '/is', '<' . $tag . ' style="' . $css . '"', $html );
+			: \preg_replace( '/<' . $tag . '/is', '<' . $tag . ' style="' . $css . '"', $html );
 	}
 
 	/**
 	 * Create html attributes
 	 *
 	 * @param array<string, string> $attributes
-	 * @param string                $svg_attr
 	 * @return string
 	 */
-	public static function create_attr( array $attributes, string $svg_attr = '' ): string {
-		foreach ( $attributes as $attr => $spec ) {
-			$svg_attr .= "{$attr}=\"{$spec}\" ";
-		}
-		return $svg_attr;
+	public static function create_attr( array $attributes ): string {
+		if ( ! $attributes ) return '';
+
+		$compiled = \join( '="%s" ', \array_keys( $attributes ) ) . '="%s"';
+
+		return \vsprintf( $compiled, \array_map( 'htmlspecialchars', \array_values( $attributes ) ) );
 	}
 }
