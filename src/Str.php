@@ -225,6 +225,11 @@ class Str {
 
 		$compiled = \join( '="%s" ', \array_keys( $attributes ) ) . '="%s"';
 
-		return \vsprintf( $compiled, \array_map( 'htmlspecialchars', \array_values( $attributes ) ) );
+		return \vsprintf( $compiled, \array_map( function ($value) {
+			if ( \is_array($value) ) {
+				$value = \implode(' ', $value);
+			}
+			return \esc_attr($value);
+		}, \array_values( $attributes ) ) );
 	}
 }
