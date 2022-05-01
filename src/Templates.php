@@ -67,13 +67,44 @@ class Templates {
 	}
 
 	/**
+	 * Renders template as a string
+	 *
+	 * @param string                   $path     Project source path.
+	 * @param string                   $template The slug name for the generic template.
+	 * @param array<int|string, mixed> $args     Optional. Additional arguments passed to the template.
+	 *                                           Default empty array.
+	 * @return string|false the contents of the output buffer and end output buffering.
+	 */
+	public static function render( string $path, string $template, array $args = [] ) {
+		\ob_start();
+		static::get( $path, $template, $args );
+		return \ob_get_clean();
+	}
+
+	/**
+	 * Gets template from the components folder
+	 *
 	 * @param string                   $path     Component source path.
 	 * @param array<int|string, mixed> $args     Optional. Additional arguments passed to the template.
 	 *                                           Default empty array.
 	 * @return false|void
 	 */
 	public static function get_component( string $path, array $args = [] ) {
-		return static::get( "Components/{$path}", \sanitize_title($path), $args );
+		return static::get( "Components/{$path}", \sanitize_title( $path ), $args );
+	}
+
+	/**
+	 * Renders component template as a string
+	 *
+	 * @param string                   $path     Component source path.
+	 * @param array<int|string, mixed> $args     Optional. Additional arguments passed to the template.
+	 *                                           Default empty array.
+	 * @return string|false the contents of the output buffer and end output buffering.
+	 */
+	public static function render_component( string $path, array $args = [] ) {
+		\ob_start();
+		static::get( "Components/{$path}", \sanitize_title( $path ), $args );
+		return \ob_get_clean();
 	}
 
 	/**
